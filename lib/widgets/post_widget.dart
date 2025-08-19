@@ -20,12 +20,12 @@ class _PostWidgetState extends State<PostWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
+        horizontal: Sizes.size16,
+        vertical: Sizes.size16,
       ),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade100, width: 0.5),
+          bottom: BorderSide(color: Colors.grey.shade100, width: Sizes.size1 / 2),
         ),
       ),
       child: Row(
@@ -34,25 +34,25 @@ class _PostWidgetState extends State<PostWidget> {
           Column(
             children: [
               CircleAvatar(
-                radius: 18,
+                radius: Sizes.size18,
                 backgroundImage: NetworkImage(widget.post.avatar),
               ),
               if (widget.post.replies > 0) ...[
-                const SizedBox(height: 8),
+                Gaps.v8,
                 Container(
-                  width: 2,
-                  height: 24,
+                  width: Sizes.size2,
+                  height: Sizes.size24,
                   color: Colors.grey.shade300,
                 ),
-                const SizedBox(height: 8),
+                Gaps.v8,
                 SizedBox(
-                  width: 30,
-                  height: 30,
+                  width: Sizes.size30,
+                  height: Sizes.size30,
                   child: Stack(
                     children: [
                       if (widget.post.replies == 1)
                         CircleAvatar(
-                          radius: 7.5,
+                          radius: Sizes.size7 + Sizes.size1 / 2,
                           backgroundImage: NetworkImage(
                               'https://picsum.photos/seed/${widget.post.username}1/100/100'),
                         )
@@ -61,7 +61,7 @@ class _PostWidgetState extends State<PostWidget> {
                           left: 0,
                           bottom: 0,
                           child: CircleAvatar(
-                            radius: 6,
+                            radius: Sizes.size6,
                             backgroundImage: NetworkImage(
                                 'https://picsum.photos/seed/${widget.post.username}2/100/100'),
                           ),
@@ -70,26 +70,26 @@ class _PostWidgetState extends State<PostWidget> {
                           right: 0,
                           top: 0,
                           child: CircleAvatar(
-                            radius: 6,
+                            radius: Sizes.size6,
                             backgroundImage: NetworkImage(
                                 'https://picsum.photos/seed/${widget.post.username}1/100/100'),
                           ),
                         ),
                       ] else ...[
                         Positioned(
-                          left: 12,
-                          top: 20,
+                          left: Sizes.size12,
+                          top: Sizes.size20,
                           child: CircleAvatar(
-                            radius: 4,
+                            radius: Sizes.size4,
                             backgroundImage: NetworkImage(
                                 'https://picsum.photos/seed/${widget.post.username}3/100/100'),
                           ),
                         ),
                         Positioned(
                           left: 0,
-                          top: 8,
+                          top: Sizes.size8,
                           child: CircleAvatar(
-                            radius: 6,
+                            radius: Sizes.size6,
                             backgroundImage: NetworkImage(
                                 'https://picsum.photos/seed/${widget.post.username}2/100/100'),
                           ),
@@ -98,7 +98,7 @@ class _PostWidgetState extends State<PostWidget> {
                           right: 0,
                           top: 0,
                           child: CircleAvatar(
-                            radius: 8,
+                            radius: Sizes.size8,
                             backgroundImage: NetworkImage(
                                 'https://picsum.photos/seed/${widget.post.username}1/100/100'),
                           ),
@@ -121,7 +121,7 @@ class _PostWidgetState extends State<PostWidget> {
                       widget.post.username,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: Sizes.size15,
                       ),
                     ),
                     const Spacer(),
@@ -129,33 +129,33 @@ class _PostWidgetState extends State<PostWidget> {
                       widget.post.timeAgo,
                       style: TextStyle(
                         color: Colors.grey.shade600,
-                        fontSize: 15,
+                        fontSize: Sizes.size15,
                       ),
                     ),
                     Gaps.h8,
                     Icon(
                       Icons.more_horiz,
                       color: Colors.grey.shade600,
-                      size: 20,
+                      size: Sizes.size20,
                     ),
                   ],
                 ),
                 if (widget.post.text != null) ...[
-                  const SizedBox(height: 6),
+                  Gaps.v6,
                   Text(
                     widget.post.text!,
                     style: const TextStyle(
-                      fontSize: 15,
+                      fontSize: Sizes.size15,
                       height: 1.3,
                     ),
                   ),
                 ],
                 if (widget.post.images != null) ...[
-                  const SizedBox(height: 8),
+                  Gaps.v8,
                   Stack(
                     children: [
                       SizedBox(
-                        height: 280,
+                        height: Sizes.size280,
                         child: PageView.builder(
                           controller: _pageController,
                           itemCount: widget.post.images!.length,
@@ -167,7 +167,7 @@ class _PostWidgetState extends State<PostWidget> {
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 4),
+                                  const EdgeInsets.symmetric(horizontal: Sizes.size4),
                               child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.circular(Sizes.size8),
@@ -207,40 +207,40 @@ class _PostWidgetState extends State<PostWidget> {
                     ],
                   ),
                 ],
-                const SizedBox(height: 12),
+                Gaps.v12,
                 Row(
                   children: [
                     Icon(
                       Icons.favorite_border,
-                      size: 22,
+                      size: Sizes.size22,
                       color: Colors.grey.shade700,
                     ),
                     Gaps.h16,
                     Icon(
                       Icons.chat_bubble_outline,
-                      size: 22,
+                      size: Sizes.size22,
                       color: Colors.grey.shade700,
                     ),
                     Gaps.h16,
                     Icon(
                       Icons.repeat,
-                      size: 22,
+                      size: Sizes.size22,
                       color: Colors.grey.shade700,
                     ),
                     Gaps.h16,
                     Icon(
                       Icons.send,
-                      size: 22,
+                      size: Sizes.size22,
                       color: Colors.grey.shade700,
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                Gaps.v8,
                 Text(
                   '${widget.post.replies} ${widget.post.replies == 1 ? 'reply' : 'replies'} • ${widget.post.likes} ${widget.post.likes == 1 ? 'like' : 'likes'}',
                   style: TextStyle(
                     color: Colors.grey.shade600,
-                    fontSize: 13,
+                    fontSize: Sizes.size13,
                   ),
                 ),
               ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:threads_clone/constants/sizes.dart';
 import 'package:threads_clone/features/home/home_screen.dart';
 import 'package:threads_clone/features/navigation/placeholder_screen.dart';
 
@@ -34,7 +35,7 @@ class _MainNavigationState extends State<MainNavigation> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: Colors.grey.shade200, width: 0.5),
+            top: BorderSide(color: Colors.grey.shade200, width: Sizes.size1 / 2),
           ),
         ),
         child: BottomNavigationBar(
@@ -53,26 +54,26 @@ class _MainNavigationState extends State<MainNavigation> {
           elevation: 0,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: 28),
-              activeIcon: Icon(Icons.home, size: 28),
+              icon: Icon(Icons.home_outlined, size: Sizes.size28),
+              activeIcon: Icon(Icons.home, size: Sizes.size28),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search, size: 28),
+              icon: Icon(Icons.search, size: Sizes.size28),
               label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.edit_square, size: 28),
+              icon: Icon(Icons.edit_square, size: Sizes.size28),
               label: 'Write Thread',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border, size: 28),
-              activeIcon: Icon(Icons.favorite, size: 28),
+              icon: Icon(Icons.favorite_border, size: Sizes.size28),
+              activeIcon: Icon(Icons.favorite, size: Sizes.size28),
               label: 'Liked Threads',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline, size: 28),
-              activeIcon: Icon(Icons.person, size: 28),
+              icon: Icon(Icons.person_outline, size: Sizes.size28),
+              activeIcon: Icon(Icons.person, size: Sizes.size28),
               label: 'Profile',
             ),
           ],

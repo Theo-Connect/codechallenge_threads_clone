@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:threads_clone/constants/sizes.dart';
 import 'package:threads_clone/models/post.dart';
 import 'package:threads_clone/widgets/post_widget.dart';
 
@@ -54,7 +55,7 @@ class HomeScreen extends StatelessWidget {
             title: Icon(
               FontAwesomeIcons.threads,
               color: Colors.black,
-              size: 36,
+              size: Sizes.size36,
             ),
             centerTitle: true,
             backgroundColor: Colors.white,
