@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:threads_clone/constants/sizes.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:threads_clone/features/home/home_screen.dart';
 import 'package:threads_clone/features/navigation/placeholder_screen.dart';
+import 'package:threads_clone/features/write/write_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -21,6 +22,15 @@ class _MainNavigationState extends State<MainNavigation> {
     const PlaceholderScreen(title: 'Profile'),
   ];
 
+  void _showWriteScreen() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (context) => const WriteScreen(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,16 +45,20 @@ class _MainNavigationState extends State<MainNavigation> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: Colors.grey.shade200, width: Sizes.size1 / 2),
+            top: BorderSide(color: Colors.grey.shade200, width: 0.5),
           ),
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
+            if (index == 2) {
+              _showWriteScreen();
+            } else {
+              setState(() {
+                _selectedIndex = index;
+              });
+            }
           },
           selectedItemColor: Colors.black,
           unselectedItemColor: Colors.grey.shade500,
@@ -54,26 +68,26 @@ class _MainNavigationState extends State<MainNavigation> {
           elevation: 0,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, size: Sizes.size28),
-              activeIcon: Icon(Icons.home, size: Sizes.size28),
+              icon: FaIcon(FontAwesomeIcons.house, size: 24),
+              activeIcon: FaIcon(FontAwesomeIcons.house, size: 24),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search, size: Sizes.size28),
+              icon: FaIcon(FontAwesomeIcons.magnifyingGlass, size: 24),
               label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.edit_square, size: Sizes.size28),
+              icon: FaIcon(FontAwesomeIcons.penToSquare, size: 24),
               label: 'Write Thread',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border, size: Sizes.size28),
-              activeIcon: Icon(Icons.favorite, size: Sizes.size28),
+              icon: FaIcon(FontAwesomeIcons.heart, size: 24),
+              activeIcon: FaIcon(FontAwesomeIcons.solidHeart, size: 24),
               label: 'Liked Threads',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline, size: Sizes.size28),
-              activeIcon: Icon(Icons.person, size: Sizes.size28),
+              icon: FaIcon(FontAwesomeIcons.user, size: 24),
+              activeIcon: FaIcon(FontAwesomeIcons.solidUser, size: 24),
               label: 'Profile',
             ),
           ],

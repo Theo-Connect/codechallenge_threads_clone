@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:threads_clone/constants/sizes.dart';
 import 'package:threads_clone/models/post.dart';
 import 'package:threads_clone/widgets/post_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  String _getThreadText(int index) {
+    final threadTexts = [
+      'Just finished my morning coffee and ready to tackle the day! ☕️',
+      'Anyone else think this weather is absolutely perfect today?',
+      'Working on a new project and feeling excited about the possibilities 🚀',
+      'Sometimes the best conversations happen in the most unexpected places',
+      'Reminder: it\'s okay to take breaks and prioritize your mental health',
+      'That moment when you finally solve a problem you\'ve been stuck on for hours 💡',
+      'Currently reading an amazing book that I can\'t put down',
+      'Food for thought: what if we approached every challenge as an opportunity?',
+      'Grateful for the small moments that make life beautiful',
+      'Pro tip: always keep learning, no matter how experienced you become',
+      'The sunset tonight was absolutely breathtaking 🌅',
+      'Sometimes you need to step back to see the bigger picture',
+      'Celebrating small wins because they add up to big achievements',
+      'Music has this incredible power to change your entire mood',
+      'Just had the most interesting conversation with a stranger today',
+    ];
+    return threadTexts[index % threadTexts.length];
+  }
 
   List<Post> _generatePosts() {
     final faker = Faker();
@@ -31,7 +51,7 @@ class HomeScreen extends StatelessWidget {
 
       return Post(
         username: faker.internet.userName().toLowerCase(),
-        text: faker.randomGenerator.boolean() ? faker.lorem.sentence() : null,
+        text: _getThreadText(index),
         images: imageCount > 0
             ? List.generate(imageCount,
                 (i) => faker.image.image(width: 400, height: 400, random: true))
@@ -55,7 +75,7 @@ class HomeScreen extends StatelessWidget {
             title: Icon(
               FontAwesomeIcons.threads,
               color: Colors.black,
-              size: Sizes.size36,
+              size: 36,
             ),
             centerTitle: true,
             backgroundColor: Colors.white,
