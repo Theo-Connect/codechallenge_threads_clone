@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:threads_clone/models/post.dart';
+import 'package:threads_clone/providers/post_provider.dart';
 import 'package:threads_clone/widgets/post_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -67,31 +69,39 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final posts = _generatePosts();
-
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
-            title: Icon(
-              FontAwesomeIcons.threads,
-              color: Colors.black,
-              size: 36,
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            elevation: 0,
-            floating: true,
-            snap: true,
+    
+    return Consumer<PostProvider>(
+      builder: (context, postProvider, child) {
+        final allPosts = [...postProvider.userPosts, ...posts];
+        
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                title: Icon(
+                  FontAwesomeIcons.threads,
+                  color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.white 
+                    : Colors.black,
+                  size: 36,
+                ),
+                centerTitle: true,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+                elevation: 0,
+                floating: true,
+                snap: true,
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => PostWidget(post: allPosts[index]),
+                  childCount: allPosts.length,
+                ),
+              ),
+            ],
           ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => PostWidget(post: posts[index]),
-              childCount: posts.length,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

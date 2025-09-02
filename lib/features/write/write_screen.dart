@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:threads_clone/features/camera/camera_screen.dart';
+import 'package:threads_clone/models/post.dart';
+import 'package:threads_clone/providers/post_provider.dart';
+import 'dart:io';
 
 class WriteScreen extends StatefulWidget {
   const WriteScreen({super.key});
@@ -11,6 +16,7 @@ class WriteScreen extends StatefulWidget {
 class _WriteScreenState extends State<WriteScreen> {
   final TextEditingController _textController = TextEditingController();
   bool _hasText = false;
+  String? _selectedImagePath;
 
   @override
   void initState() {
@@ -31,30 +37,33 @@ class _WriteScreenState extends State<WriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text(
+          child: Text(
             'Cancel',
             style: TextStyle(
-              color: Colors.black,
+              color: Theme.of(context).brightness == Brightness.dark 
+                ? Colors.white 
+                : Colors.black,
               fontSize: 16,
             ),
           ),
         ),
-        title: const Text(
+        title: Text(
           'New thread',
           style: TextStyle(
-            color: Colors.black,
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? Colors.white 
+              : Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
-        leadingWidth: 80,
+        leadingWidth: 100,
       ),
       body: Column(
         children: [
@@ -82,31 +91,91 @@ class _WriteScreenState extends State<WriteScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'SCEO',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
+                            color: Theme.of(context).brightness == Brightness.dark 
+                              ? Colors.white 
+                              : Colors.black,
                           ),
                         ),
                         // const SizedBox(height: 1),
                         TextField(
                           controller: _textController,
                           maxLines: null,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: 'Start a thread...',
                             border: InputBorder.none,
                             hintStyle: TextStyle(
-                              color: Colors.grey,
+                              color: Colors.grey.shade500,
                               fontSize: 14,
                             ),
                             contentPadding: EdgeInsets.zero,
                           ),
-                          style: const TextStyle(fontSize: 14),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).brightness == Brightness.dark 
+                              ? Colors.white 
+                              : Colors.black,
+                          ),
                         ),
                         const SizedBox(height: 4),
+                        if (_selectedImagePath != null)
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            child: Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    File(_selectedImagePath!),
+                                    height: 200,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedImagePath = null;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black54,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () async {
+                            final result = await Navigator.push<String>(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CameraScreen(),
+                              ),
+                            );
+                            if (result != null) {
+                              setState(() {
+                                _selectedImagePath = result;
+                              });
+                            }
+                          },
                           child: FaIcon(
                             FontAwesomeIcons.paperclip,
                             color: Colors.grey.shade600,
@@ -124,21 +193,38 @@ class _WriteScreenState extends State<WriteScreen> {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(color: Colors.grey.shade200, width: 0.5),
+                top: BorderSide(
+                  color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.grey.shade800 
+                    : Colors.grey.shade200, 
+                  width: 0.5
+                ),
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'Anyone can reply',
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: Colors.grey.shade500,
                     fontSize: 14,
                   ),
                 ),
                 TextButton(
-                  onPressed: _hasText ? () => Navigator.pop(context) : null,
+                  onPressed: _hasText ? () {
+                    final newPost = Post(
+                      username: 'SCEO',
+                      text: _textController.text,
+                      images: _selectedImagePath != null ? [_selectedImagePath!] : null,
+                      timeAgo: 'now',
+                      replies: 0,
+                      likes: 0,
+                      avatar: '',
+                    );
+                    context.read<PostProvider>().addPost(newPost);
+                    Navigator.pop(context);
+                  } : null,
                   child: Text(
                     'Post',
                     style: TextStyle(

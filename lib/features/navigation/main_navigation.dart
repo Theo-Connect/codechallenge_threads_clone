@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:threads_clone/features/activity/activity_screen.dart';
 import 'package:threads_clone/features/home/home_screen.dart';
 import 'package:threads_clone/features/navigation/placeholder_screen.dart';
+import 'package:threads_clone/features/search/search_screen.dart';
 import 'package:threads_clone/features/write/write_screen.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -16,9 +18,9 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const PlaceholderScreen(title: 'Search'),
+    const SearchScreen(),
     const PlaceholderScreen(title: 'Write Thread'),
-    const PlaceholderScreen(title: 'Liked Threads'),
+    const ActivityScreen(),
     const PlaceholderScreen(title: 'Profile'),
   ];
 
@@ -45,7 +47,12 @@ class _MainNavigationState extends State<MainNavigation> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: Colors.grey.shade200, width: 0.5),
+            top: BorderSide(
+              color: Theme.of(context).brightness == Brightness.dark 
+                ? Colors.grey.shade800 
+                : Colors.grey.shade200, 
+              width: 0.5
+            ),
           ),
         ),
         child: BottomNavigationBar(
@@ -60,11 +67,13 @@ class _MainNavigationState extends State<MainNavigation> {
               });
             }
           },
-          selectedItemColor: Colors.black,
+          selectedItemColor: Theme.of(context).brightness == Brightness.dark 
+            ? Colors.white 
+            : Colors.black,
           unselectedItemColor: Colors.grey.shade500,
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
           items: const [
             BottomNavigationBarItem(

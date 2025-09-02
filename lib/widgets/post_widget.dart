@@ -4,6 +4,7 @@ import 'package:threads_clone/constants/gaps.dart';
 import 'package:threads_clone/constants/sizes.dart';
 import 'package:threads_clone/models/post.dart';
 import 'package:threads_clone/widgets/report_screen.dart';
+import 'dart:io';
 
 class PostWidget extends StatefulWidget {
   final Post post;
@@ -27,7 +28,12 @@ class _PostWidgetState extends State<PostWidget> {
       ),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade200, width: 0.5),
+          bottom: BorderSide(
+            color: Theme.of(context).brightness == Brightness.dark 
+              ? Colors.grey.shade800 
+              : Colors.grey.shade200, 
+            width: 0.5
+          ),
         ),
       ),
       child: Row(
@@ -37,14 +43,21 @@ class _PostWidgetState extends State<PostWidget> {
             children: [
               CircleAvatar(
                 radius: 18,
-                backgroundImage: NetworkImage(widget.post.avatar),
+                backgroundImage: widget.post.avatar.isNotEmpty
+                    ? NetworkImage(widget.post.avatar)
+                    : null,
+                child: widget.post.avatar.isEmpty
+                    ? const Icon(Icons.person, size: 20)
+                    : null,
               ),
               if (widget.post.replies > 0) ...[
                 const SizedBox(height: 8),
                 Container(
                   width: 2,
                   height: 24,
-                  color: Colors.grey.shade300,
+                  color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.grey.shade700 
+                    : Colors.grey.shade300,
                 ),
                 const SizedBox(height: 8),
                 SizedBox(
@@ -130,7 +143,7 @@ class _PostWidgetState extends State<PostWidget> {
                     Text(
                       widget.post.timeAgo,
                       style: TextStyle(
-                        color: Colors.grey.shade400,
+                        color: Colors.grey.shade500,
                         fontSize: 15,
                       ),
                     ),
@@ -139,7 +152,7 @@ class _PostWidgetState extends State<PostWidget> {
                       onTap: _showBottomSheet,
                       child: FaIcon(
                         FontAwesomeIcons.ellipsis,
-                        color: Colors.grey.shade400,
+                        color: Colors.grey.shade500,
                         size: 16,
                       ),
                     ),
@@ -176,11 +189,7 @@ class _PostWidgetState extends State<PostWidget> {
                               child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.circular(Sizes.size8),
-                                child: Image.network(
-                                  widget.post.images![index],
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                ),
+                                child: _buildImage(widget.post.images![index]),
                               ),
                             );
                           },
@@ -218,25 +227,33 @@ class _PostWidgetState extends State<PostWidget> {
                     FaIcon(
                       FontAwesomeIcons.heart,
                       size: 18,
-                      color: Colors.grey.shade700,
+                      color: Theme.of(context).brightness == Brightness.dark 
+                        ? Colors.grey.shade400 
+                        : Colors.grey.shade700,
                     ),
                     Gaps.h16,
                     FaIcon(
                       FontAwesomeIcons.comment,
                       size: 18,
-                      color: Colors.grey.shade700,
+                      color: Theme.of(context).brightness == Brightness.dark 
+                        ? Colors.grey.shade400 
+                        : Colors.grey.shade700,
                     ),
                     Gaps.h16,
                     FaIcon(
                       FontAwesomeIcons.retweet,
                       size: 18,
-                      color: Colors.grey.shade700,
+                      color: Theme.of(context).brightness == Brightness.dark 
+                        ? Colors.grey.shade400 
+                        : Colors.grey.shade700,
                     ),
                     Gaps.h16,
                     FaIcon(
                       FontAwesomeIcons.paperPlane,
                       size: 18,
-                      color: Colors.grey.shade700,
+                      color: Theme.of(context).brightness == Brightness.dark 
+                        ? Colors.grey.shade400 
+                        : Colors.grey.shade700,
                     ),
                   ],
                 ),
@@ -244,7 +261,7 @@ class _PostWidgetState extends State<PostWidget> {
                 Text(
                   '${widget.post.replies} ${widget.post.replies == 1 ? 'reply' : 'replies'} • ${widget.post.likes} ${widget.post.likes == 1 ? 'like' : 'likes'}',
                   style: TextStyle(
-                    color: Colors.grey.shade400,
+                    color: Colors.grey.shade500,
                     fontSize: 13,
                   ),
                 ),
@@ -287,7 +304,7 @@ class _PostWidgetState extends State<PostWidget> {
                       'Unfollow', () => Navigator.pop(context)),
                   Container(
                     height: 0.5,
-                    color: Colors.grey.shade400,
+                    color: Colors.grey.shade600,
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                   ),
                   _buildBottomSheetOption('Mute', () => Navigator.pop(context)),
@@ -305,7 +322,7 @@ class _PostWidgetState extends State<PostWidget> {
                   _buildBottomSheetOption('Hide', () => Navigator.pop(context)),
                   Container(
                     height: 0.5,
-                    color: Colors.grey.shade400,
+                    color: Colors.grey.shade600,
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                   ),
                   _buildBottomSheetOption('Report', _showReportScreen,
@@ -343,11 +360,31 @@ class _PostWidgetState extends State<PostWidget> {
           text,
           style: TextStyle(
             fontSize: 16,
-            color: isRed ? Colors.red : Colors.black,
+            color: isRed 
+              ? Colors.red 
+              : (Theme.of(context).brightness == Brightness.dark 
+                ? Colors.white 
+                : Colors.black),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildImage(String imagePath) {
+    if (imagePath.startsWith('http')) {
+      return Image.network(
+        imagePath,
+        fit: BoxFit.cover,
+        width: double.infinity,
+      );
+    } else {
+      return Image.file(
+        File(imagePath),
+        fit: BoxFit.cover,
+        width: double.infinity,
+      );
+    }
   }
 
   @override
