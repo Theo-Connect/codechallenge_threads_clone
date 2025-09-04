@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:threads_clone/features/navigation/main_navigation.dart';
 import 'package:threads_clone/providers/post_provider.dart';
+import 'package:threads_clone/router.dart';
 
 void main() {
   runApp(const ThreadsApp());
@@ -18,8 +18,9 @@ class ThreadsApp extends StatelessWidget {
     
     return ChangeNotifierProvider(
       create: (context) => PostProvider(),
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Threads Clone',
+        routerConfig: router,
         theme: ThemeData(
           brightness: Brightness.light,
           scaffoldBackgroundColor: Colors.white,
@@ -41,7 +42,6 @@ class ThreadsApp extends StatelessWidget {
           ),
         ),
         themeMode: ThemeMode.system,
-        home: const MainNavigation(),
       ),
     );
   }

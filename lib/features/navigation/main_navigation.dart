@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:threads_clone/features/activity/activity_screen.dart';
-import 'package:threads_clone/features/home/home_screen.dart';
-import 'package:threads_clone/features/navigation/placeholder_screen.dart';
-import 'package:threads_clone/features/search/search_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:threads_clone/features/write/write_screen.dart';
 
 class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
+  final Widget child;
+  const MainNavigation({super.key, required this.child});
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
@@ -15,14 +13,6 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const SearchScreen(),
-    const PlaceholderScreen(title: 'Write Thread'),
-    const ActivityScreen(),
-    const PlaceholderScreen(title: 'Profile'),
-  ];
 
   void _showWriteScreen() {
     showModalBottomSheet(
@@ -33,17 +23,53 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 
+  void _onTap(int index) {
+    switch (index) {
+      case 0:
+        context.go('/');
+        break;
+      case 1:
+        context.go('/search');
+        break;
+      case 2:
+        _showWriteScreen();
+        return;
+      case 3:
+        context.go('/activity');
+        break;
+      case 4:
+        context.go('/profile');
+        break;
+    }
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final location = GoRouterState.of(context).location;
+    switch (location) {
+      case '/':
+        _selectedIndex = 0;
+        break;
+      case '/search':
+        _selectedIndex = 1;
+        break;
+      case '/activity':
+        _selectedIndex = 3;
+        break;
+      case '/profile':
+        _selectedIndex = 4;
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: _screens.asMap().entries.map((entry) {
-          return Offstage(
-            offstage: entry.key != _selectedIndex,
-            child: entry.value,
-          );
-        }).toList(),
-      ),
+      body: widget.child,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
@@ -58,15 +84,7 @@ class _MainNavigationState extends State<MainNavigation> {
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
-          onTap: (index) {
-            if (index == 2) {
-              _showWriteScreen();
-            } else {
-              setState(() {
-                _selectedIndex = index;
-              });
-            }
-          },
+          onTap: _onTap,
           selectedItemColor: Theme.of(context).brightness == Brightness.dark 
             ? Colors.white 
             : Colors.black,
