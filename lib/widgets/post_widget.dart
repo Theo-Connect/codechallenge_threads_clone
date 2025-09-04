@@ -295,7 +295,9 @@ class _PostWidgetState extends State<PostWidget> {
             const SizedBox(height: 24),
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: Theme.of(context).brightness == Brightness.dark 
+                  ? Colors.grey.shade800 
+                  : Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -314,7 +316,9 @@ class _PostWidgetState extends State<PostWidget> {
             const SizedBox(height: 16),
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: Theme.of(context).brightness == Brightness.dark 
+                  ? Colors.grey.shade800 
+                  : Colors.grey.shade200,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(

@@ -33,7 +33,7 @@ class SearchScreen extends StatelessWidget {
       'username': usernames[index],
       'description': descriptions[index],
       'followers': followers[index],
-      'avatar': faker.image.image(width: 100, height: 100, random: true),
+      'avatar': 'https://picsum.photos/100/100?random=${index + 200}',
       'isVerified': true,
     });
   }

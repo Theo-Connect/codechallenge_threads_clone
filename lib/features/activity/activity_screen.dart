@@ -27,14 +27,13 @@ class _ActivityScreenState extends State<ActivityScreen>
   }
 
   List<Map<String, dynamic>> _generateActivities() {
-    final faker = Faker();
     return [
       {
         'username': 'john_mobbin',
         'action': 'Mentioned you',
         'content': 'Here\'s a thread you should follow if you love botany @jane_mobbin',
         'time': '4h',
-        'avatar': faker.image.image(width: 100, height: 100, random: true),
+        'avatar': 'https://picsum.photos/100/100?random=300',
         'icon': Icons.alternate_email,
         'iconColor': Colors.green,
       },
@@ -43,7 +42,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         'action': 'Starting out my gardening club with thr...',
         'content': 'Count me in!',
         'time': '4h',
-        'avatar': faker.image.image(width: 100, height: 100, random: true),
+        'avatar': 'https://picsum.photos/100/100?random=301',
         'icon': FontAwesomeIcons.reply,
         'iconColor': Colors.blue,
       },
@@ -52,7 +51,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         'action': 'Followed you',
         'content': null,
         'time': '5h',
-        'avatar': faker.image.image(width: 100, height: 100, random: true),
+        'avatar': 'https://picsum.photos/100/100?random=302',
         'icon': Icons.person_add,
         'iconColor': Colors.purple,
         'showFollowing': true,
@@ -62,7 +61,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         'action': null,
         'content': 'Definitely broken! 🎩 👀 🌱',
         'time': '5h',
-        'avatar': faker.image.image(width: 100, height: 100, random: true),
+        'avatar': 'https://picsum.photos/100/100?random=303',
         'icon': FontAwesomeIcons.heart,
         'iconColor': Colors.pink,
       },
@@ -71,7 +70,7 @@ class _ActivityScreenState extends State<ActivityScreen>
         'action': null,
         'content': '🌱 👀 🎩',
         'time': '5h',
-        'avatar': faker.image.image(width: 100, height: 100, random: true),
+        'avatar': 'https://picsum.photos/100/100?random=304',
         'icon': FontAwesomeIcons.heart,
         'iconColor': Colors.pink,
       },

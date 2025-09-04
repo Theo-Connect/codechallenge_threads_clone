@@ -56,12 +56,12 @@ class HomeScreen extends StatelessWidget {
         text: _getThreadText(index),
         images: imageCount > 0
             ? List.generate(imageCount,
-                (i) => faker.image.image(width: 400, height: 400, random: true))
+                (i) => 'https://picsum.photos/400/400?random=${index * 10 + i}')
             : null,
         timeAgo: timeOptions[faker.randomGenerator.integer(timeOptions.length)],
         replies: faker.randomGenerator.integer(100),
         likes: faker.randomGenerator.integer(500),
-        avatar: faker.image.image(width: 100, height: 100, random: true),
+        avatar: 'https://picsum.photos/100/100?random=${index + 100}',
       );
     });
   }

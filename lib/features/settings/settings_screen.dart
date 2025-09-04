@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:threads_clone/providers/theme_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -16,14 +18,29 @@ class SettingsScreen extends StatelessWidget {
           ? Colors.white 
           : Colors.black,
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: const Text('Privacy'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.push('/settings/privacy'),
-          ),
-        ],
+      body: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return ListView(
+            children: [
+              ListTile(
+                title: const Text('Dark Mode'),
+                trailing: Switch(
+                  value: themeProvider.themeMode == ThemeMode.dark,
+                  onChanged: (value) {
+                    themeProvider.setThemeMode(
+                      value ? ThemeMode.dark : ThemeMode.light,
+                    );
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text('Privacy'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => context.push('/settings/privacy'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
