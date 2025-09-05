@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threads_clone/models/post.dart';
-import 'package:threads_clone/providers/post_provider.dart';
+import 'package:threads_clone/providers/post_notifier.dart';
 import 'package:threads_clone/widgets/post_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   String _getThreadText(int index) {
@@ -67,14 +67,12 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final posts = _generatePosts();
-    
-    return Consumer<PostProvider>(
-      builder: (context, postProvider, child) {
-        final allPosts = [...postProvider.userPosts, ...posts];
+    final postState = ref.watch(postProviderNotifier);
+    final allPosts = [...postState.userPosts, ...posts];
         
-        return Scaffold(
+    return Scaffold(
           body: CustomScrollView(
             slivers: [
               SliverAppBar(
@@ -100,8 +98,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-        );
-      },
     );
   }
 }

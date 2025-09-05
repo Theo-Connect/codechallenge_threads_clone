@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:threads_clone/providers/theme_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:threads_clone/providers/theme_notifier.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -18,29 +18,25 @@ class SettingsScreen extends StatelessWidget {
           ? Colors.white 
           : Colors.black,
       ),
-      body: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return ListView(
-            children: [
-              ListTile(
-                title: const Text('Dark Mode'),
-                trailing: Switch(
-                  value: themeProvider.themeMode == ThemeMode.dark,
-                  onChanged: (value) {
-                    themeProvider.setThemeMode(
-                      value ? ThemeMode.dark : ThemeMode.light,
-                    );
-                  },
-                ),
-              ),
-              ListTile(
-                title: const Text('Privacy'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.push('/settings/privacy'),
-              ),
-            ],
-          );
-        },
+      body: ListView(
+        children: [
+          ListTile(
+            title: const Text('Dark Mode'),
+            trailing: Switch(
+              value: ref.watch(themeProvider) == ThemeMode.dark,
+              onChanged: (value) {
+                ref.read(themeProvider.notifier).setThemeMode(
+                  value ? ThemeMode.dark : ThemeMode.light,
+                );
+              },
+            ),
+          ),
+          ListTile(
+            title: const Text('Privacy'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push('/settings/privacy'),
+          ),
+        ],
       ),
     );
   }

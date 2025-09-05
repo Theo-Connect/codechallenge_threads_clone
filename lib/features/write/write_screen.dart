@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threads_clone/features/camera/camera_screen.dart';
 import 'package:threads_clone/models/post.dart';
-import 'package:threads_clone/providers/post_provider.dart';
+import 'package:threads_clone/providers/post_notifier.dart';
 import 'dart:io';
 
-class WriteScreen extends StatefulWidget {
+class WriteScreen extends ConsumerStatefulWidget {
   const WriteScreen({super.key});
 
   @override
-  State<WriteScreen> createState() => _WriteScreenState();
+  ConsumerState<WriteScreen> createState() => _WriteScreenState();
 }
 
-class _WriteScreenState extends State<WriteScreen> {
+class _WriteScreenState extends ConsumerState<WriteScreen> {
   final TextEditingController _textController = TextEditingController();
   bool _hasText = false;
   String? _selectedImagePath;
@@ -222,7 +222,7 @@ class _WriteScreenState extends State<WriteScreen> {
                       likes: 0,
                       avatar: '',
                     );
-                    context.read<PostProvider>().addPost(newPost);
+                    ref.read(postProviderNotifier.notifier).addPost(newPost);
                     Navigator.pop(context);
                   } : null,
                   child: Text(
